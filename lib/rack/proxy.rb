@@ -78,7 +78,8 @@ module Rack
       target_request.initialize_http_header(self.class.extract_http_request_headers(source_request.env))
 
       # Setup body
-      if target_request.request_body_permitted? && source_request.body
+      # Always send request body if it exists no matter the method
+      if source_request.body
         target_request.body_stream    = source_request.body
         target_request.content_length = source_request.content_length.to_i
         target_request.content_type   = source_request.content_type if source_request.content_type
